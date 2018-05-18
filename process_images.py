@@ -229,14 +229,10 @@ def print_result_to_file_with_parts(result, result_file_path):
 def prepare_video_out(root_folder):
     for root, dirs, files in os.walk(root_folder):
         for file in sorted(files):
-            if file.split('.')[-1].lower() not in ('mkv', 'avi', 'mov'):
+            if file.split('.')[-1].lower() not in ('mkv', 'avi', 'mov', 'wmv'):
                 continue
             file_path = os.path.join(root, file)
-            global _video_out_in_same_folder
-            if '.mov' in file:
-                _video_out_in_same_folder = False
-            else:
-                _video_out_in_same_folder = True
+
             if _video_out_in_same_folder:
                 working_dir = root
             else:
@@ -249,7 +245,7 @@ def prepare_video_out(root_folder):
                             stderr=subprocess.DEVNULL)
 
             print(file_path, 'screens')
-            slickslice_path = os.path.join(os.path.dirname(__file__), 'slickslice-0.9.sh')
+            slickslice_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'slickslice-0.9.sh')
             subprocess.call('''{} -x "{}"'''.format(slickslice_path, file_path), cwd=working_dir, shell=True,
                             stdout=subprocess.DEVNULL)
 
@@ -266,10 +262,7 @@ def main():
 
         pics_to_upload = prepare_pics_to_process(root_folder)
         result = upload_to_fastpic_parallel(pics_to_upload)
-        try:
-            print_result_to_file(result, os.path.join(root_folder, 'result_codes.txt'))
-        except Exception as ex:
-            print(ex)
+        print_result_to_file(result, os.path.join(root_folder, 'result_codes.txt'))
         print_result_to_file_with_parts(result, os.path.join(root_folder, 'result_codes.txt'))
 
 

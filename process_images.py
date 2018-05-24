@@ -24,7 +24,8 @@ _skip_out_generation = (
 )
 _cover_indicators = ('cover.', '_lg.jpg', '- video.jpg')
 _cover_key = '_covers'
-_out_indicators = (' out.jpg', 'SLICKSLICED_')
+_out_indicators = (' out.jpg', 'SLICKSLICED_', 'ContactSheet')
+_video_indicators = (' - video', 'Videos')
 
 
 def resize_one_file(file_path, dir_for_resized):
@@ -114,7 +115,7 @@ def prepare_pics_to_process(root_folder):
         for file in sorted(files_to_process):
             result[result_key].append(os.path.join(root, file))
 
-        if ' - video' in root:
+        if any(video_indicator in root for video_indicator in _video_indicators):
             result[result_key] = []
 
         for file in sorted(files):
@@ -130,7 +131,7 @@ def prepare_pics_to_process(root_folder):
                 result[_cover_key].append(file_path)
                 result[result_key].insert(0, file_path)
                 continue
-            if ' - video' in root:
+            if any(video_indicator in root for video_indicator in _video_indicators):
                 result[result_key].append(file_path)
     return result
 

@@ -19,6 +19,7 @@ def parse_proxy():
             if len(parts) < 2:
                 continue
             proxy_list.append('https://{}:{}'.format(parts[0], parts[1]))
+    proxy_list = list(set(proxy_list))
     random.shuffle(proxy_list)
     return proxy_list
 
@@ -94,7 +95,10 @@ def upload_file_to_fastpic(file_path, tmp_dir, proxy=None):
         if error:
             print('No result cause error: {}'.format(error))
 
-            if 'You are reached limit per a day uploads' in error:
+            known_errors = ('You are reached limit per a day uploads',
+                            'Sorry, uploading from TOR network are not allowed')
+            if any(known_error in error for known_error in known_errors):
+                parsed_proxies.remove(proxy)
                 proxy = get_next_proxy()
                 return upload_file_to_fastpic(file_path, tmp_dir, proxy)
 

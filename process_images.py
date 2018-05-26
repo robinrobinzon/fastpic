@@ -22,7 +22,7 @@ _root_folders_set = (
 _skip_out_generation = (
     '',
 )
-_cover_indicators = ('cover.', '_lg.jpg', '- video.jpg')
+_cover_indicators = ('cover.', '_lg.jpg', '- video.jpg', '_000.jpg')
 _cover_key = '_covers'
 _out_indicators = (' out.jpg', 'SLICKSLICED_', 'ContactSheet')
 _video_indicators = (' - video', 'Videos')
